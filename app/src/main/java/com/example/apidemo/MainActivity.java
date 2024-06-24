@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString(TOKEN_KEY, token);
                     editor.apply();
-                    String displayText = "JSession ID: " + responseBody.getJSESSIONID() + "\nKey: " + responseBody.getKey() + "\nForce Password Change: " + responseBody.isForcePasswordChange();
+                    String displayText = "response :" +"  " +"{" + "\n" + "JSESSIONID: " + responseBody.getJSESSIONID() +","+ "\nkey: " + responseBody.getKey() + ","+ "\nforcePasswordChange: " + responseBody.isForcePasswordChange() + "\n"+ "}";
                     Response.setText(displayText);
 
                 } else {
