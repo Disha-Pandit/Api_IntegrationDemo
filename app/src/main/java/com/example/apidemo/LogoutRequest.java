@@ -1,10 +1,7 @@
 package com.example.apidemo;
-
 import com.google.gson.annotations.SerializedName;
 
-
 public class LogoutRequest {
-
     @SerializedName("is_cmp_admin_login_param")
     private String isCmpAdminLoginParam;
     private String login;

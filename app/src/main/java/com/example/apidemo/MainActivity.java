@@ -1,5 +1,4 @@
 package com.example.apidemo;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -7,15 +6,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.gson.Gson;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.concurrent.TimeUnit;
@@ -41,8 +36,6 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private static final String PREFS_NAME = "com.example.apidemo.PREFS";
     private static final String TOKEN_KEY = "m-service-token";
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
             OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
             httpClient.sslSocketFactory(sslContext.getSocketFactory(), (X509TrustManager) trustAllCerts[0]);
             httpClient.hostnameVerifier(new HostnameVerifier() {
-
                 @Override
                 public boolean verify(String hostname, SSLSession session) {
                     return true;
@@ -111,7 +103,6 @@ public class MainActivity extends AppCompatActivity {
                     .build();
 
             commonService = retrofit.create(CommonService.class);
-
             btnLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -129,11 +120,9 @@ public class MainActivity extends AppCompatActivity {
             throw new RuntimeException(e);
         }
     }
-
     private void performLogin() {
         LoginRequest loginRequest = new LoginRequest("json", "DISHAPANDIT.CMP", "India@901");
         Call<LoginResponse> call = commonService.login(loginRequest);
-
         call.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
@@ -169,19 +158,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void performLogout() {
         LogoutRequest logoutRequest = new LogoutRequest("false", "DISHAPANDIT.CMP", "India@901", "json");
-
         Call<LogoutResponse> call = commonService.logout(logoutRequest);
-
         Log.d("LogoutRequest", "Request: " + new Gson().toJson(logoutRequest));
-
         call.enqueue(new Callback<LogoutResponse>() {
             @Override
             public void onResponse(Call<LogoutResponse> call, Response<LogoutResponse> response) {
-
                 Log.d("LogoutResponse", "Response Code: " + response.code()); // Log response code
                 Log.d("LogoutResponseHeaders", "Headers: " + response.headers().toString());
                 Log.d("LogoutResponse", "response success: " + response.isSuccessful());
-
                 if (response.isSuccessful() && response.body() != null) {
                     LogoutResponse logoutResponse = response.body();
                     Log.d("LogoutResponseBody", "Body: " + new Gson().toJson(logoutResponse));
@@ -195,7 +179,6 @@ public class MainActivity extends AppCompatActivity {
                     handleErrorResponse(response);
                 }
             }
-
             @Override
             public void onFailure(Call<LogoutResponse> call, Throwable t) {
                 t.printStackTrace();
@@ -210,7 +193,6 @@ public class MainActivity extends AppCompatActivity {
             if (response.errorBody() != null) {
                 String errorBody = response.errorBody().string();
                 Log.e("LogoutError", "Request failed: " + errorBody); // Log error body
-
                 if (isJson(errorBody)) {
                     try {
                         JSONObject errorJson = new JSONObject(errorBody);
@@ -234,7 +216,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
     private boolean isJson(String str) {
         try {
             new JSONObject(str);
@@ -248,4 +229,3 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 }
-
